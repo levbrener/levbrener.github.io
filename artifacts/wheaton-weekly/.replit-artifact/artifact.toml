@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "The Wheaton Weekly"
+description = "A warmly editorial local newspaper website for The Wheaton Weekly, with a front page, section browsing, article reading, saved stories, search, archive controls, and a lightweight browser-based publishing desk."
+version = "1.0.0"
+id = "artifacts/wheaton-weekly"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25264
+
+[services.development]
+run = "pnpm --filter @workspace/wheaton-weekly run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/wheaton-weekly", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/wheaton-weekly/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25264"
+BASE_PATH = "/"

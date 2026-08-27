@@ -12,15 +12,13 @@ const queryClient = new QueryClient();
 
 type Story = { id: string; section: string; title: string; dek: string; byline: string; time: string; image: string; featured?: boolean; color?: string };
 const stories: Story[] = [
-  { id: 'library-after-hours', section: 'Civic life', title: 'The library after hours', dek: 'When the doors lock, a second kind of public life begins in Wheaton.', byline: 'Mara Bell', time: '8 min read', image: '/library.jpg', featured: true },
+  { id: 'library-after-hours', section: 'Front page', title: 'The library after hours', dek: 'When the doors lock, a second kind of public life begins in Wheaton.', byline: 'Mara Bell', time: '8 min read', image: '/library.jpg', featured: true },
   { id: 'long-way-home', section: 'Field notes', title: 'The long way home', dek: 'A walk down Main Street, with no errands to run and nowhere much to be.', byline: 'Eli Tannen', time: '6 min read', image: '/main-street.jpg' },
   { id: 'soup-season', section: 'At the table', title: 'Soup season has arrived', dek: 'Three kitchens, four generations, one pot that keeps finding its way back.', byline: 'June Park', time: '4 min read', image: '/soup.jpg' },
   { id: 'small-business', section: 'Commerce', title: 'A little more than a hardware store', dek: 'At Kirby’s, the inventory is nails. The service is knowing your name.', byline: 'Mara Bell', time: '5 min read', image: '/hardware.jpg' },
   { id: 'weather-window', section: 'Weather desk', title: 'A window for weather', dek: 'The forecast, with less false confidence and more useful detail.', byline: 'The Weekly desk', time: '3 min read', image: '/main-street.jpg' },
   { id: 'porch-light', section: 'People', title: 'Leave the porch light on', dek: 'Notes from a neighborhood that still believes in lingering.', byline: 'Owen Wirth', time: '7 min read', image: '/library.jpg' },
 ];
-
-const sections = ['All stories', 'Civic life', 'Field notes', 'At the table', 'Commerce', 'People', 'Weather desk'];
 
 function Logo({ compact = false }: { compact?: boolean }) {
   return <Link href="/" className={`flex items-center gap-3 no-underline ${compact ? 'gap-2' : ''}`} data-testid="link-home">
@@ -42,7 +40,6 @@ function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }
       <div className="utility-inner">
         <div className="flex items-center gap-3">
           <button className="md:hidden" onClick={() => setMenu(!menu)} aria-label="Open menu" data-testid="button-menu"><Menu size={18} /></button>
-          <span className="utility-date">Thursday, October 17, 2024</span>
         </div>
         <div className="utility-actions">
           <button onClick={onSearch} className="utility-button utility-search" data-testid="button-search"><Search size={14} /><span className="hidden sm:inline">Search</span></button>
@@ -58,7 +55,6 @@ function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }
     {menu && <div className="mobile-menu page-in">
       <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-4 text-[11px] uppercase tracking-[.17em]">
         <Link href="/" onClick={() => setMenu(false)} data-testid="mobile-link-front">Front page</Link>
-        <Link href="/section/civic-life" onClick={() => setMenu(false)} data-testid="mobile-link-civic">Civic life</Link>
         <Link href="/section/all" onClick={() => setMenu(false)} data-testid="mobile-link-archive">Archive</Link>
         <Link href="/saved" onClick={() => setMenu(false)} data-testid="mobile-link-saved">Saved stories ({savedCount})</Link>
       </div>
@@ -69,17 +65,13 @@ function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }
 function Masthead({ savedCount = 0 }: { savedCount?: number }) {
   return <div className="masthead-shell mx-auto max-w-[1320px] px-5 lg:px-8">
     <div className="masthead">
-      <p className="masthead-eyebrow">Wheaton’s newspaper of record since 1913</p>
+      <p className="masthead-eyebrow">Wheaton’s newspaper of record since 2026</p>
       <h1 className="font-editorial">The Wheaton<br /><span>Weekly</span></h1>
-      <p className="masthead-tagline">“All the news that’s fit to print — and then some neighborhood gossip.”</p>
     </div>
-    <div className="masthead-meta"><span>Thursday, October 17, 2024</span><span className="hidden md:inline">Printed with care · Read slowly</span><span>Free to read</span></div>
     <nav className="site-nav" aria-label="Main navigation">
       <Link href="/" data-testid="link-front-page">Front page</Link>
-      <Link href="/section/civic-life" data-testid="link-civic-life">Civic life</Link>
-      <Link href="/section/all" data-testid="link-all-sections">Around town</Link>
       <Link href="/saved" className="saved-nav-link" data-testid="link-saved-nav">Saved {savedCount > 0 && <span>({savedCount})</span>}</Link>
-      <Link href="/section/all" className="hidden sm:block" data-testid="link-archive-nav">Archive</Link>
+      <Link href="/section/all" data-testid="link-archive-nav">Archive</Link>
     </nav>
   </div>;
 }
@@ -112,22 +104,18 @@ function HomePage({ saved, onSave, onSearch }: { saved: string[]; onSave: (id: s
         <div className="flex flex-col justify-end border-l border-border pl-7"><Feather className="mb-7 text-accent" size={28} strokeWidth={1.2} /><p className="font-editorial text-2xl leading-tight">“A paper should have a point of view. Otherwise it’s just a pile of facts.”</p><button onClick={() => window.alert('Nora’s full editor letter is delivered with Thursday’s edition.')} className="mt-6 flex w-fit items-center gap-2 text-[10px] uppercase tracking-[.16em] text-accent hover:gap-3 transition-all" data-testid="button-read-note">Read the full note <ChevronRight size={15} /></button></div>
       </div>
     </section>
-    <section className="mx-auto max-w-[1320px] px-5 py-10 lg:px-8 lg:py-14">
-      <div className="mb-7 flex items-end justify-between border-b-[3px] border-foreground pb-3"><div><p className="mb-2 text-[10px] uppercase tracking-[.2em] text-accent">More from around town</p><h2 className="font-editorial text-4xl font-bold tracking-[-.04em]">The rest of the paper</h2></div><Link href="/section/all" className="hidden text-[10px] uppercase tracking-[.16em] text-accent sm:flex sm:items-center" data-testid="link-all-stories">Browse all <ChevronRight size={15} /></Link></div>
-      <div className="grid gap-x-7 gap-y-10 md:grid-cols-3">{stories.slice(4).map((story) => <StoryCard key={story.id} story={story} saved={saved.includes(story.id)} onSave={onSave} />)}<div className="flex min-h-[240px] flex-col justify-between border border-border bg-primary p-6 text-primary-foreground"><div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/65">The weekly crossword</p><h3 className="font-editorial text-3xl leading-none">Something to chew on.</h3></div><div className="flex items-end justify-between"><span className="font-mono-ui text-5xl text-accent">17A</span><button onClick={() => window.alert('The crossword is tucked into the print edition this week.')} className="flex items-center gap-1 text-[10px] uppercase tracking-[.14em]" data-testid="button-open-crossword">Open puzzle <ChevronRight size={14} /></button></div></div></div>
-    </section>
     <Footer />
   </main>;
 }
 
 function SectionPage({ saved, onSave, section }: { saved: string[]; onSave: (id: string) => void; section: string }) {
-  const filtered = section === 'All stories' ? stories : stories.filter((s) => s.section === section);
-  return <main className="mx-auto max-w-[1320px] px-5 py-9 page-in lg:px-8 lg:py-14"><div className="mb-8 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">{section}</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">The people, places and small arguments shaping life around town.</p></div><div className="grid gap-x-7 gap-y-12 md:grid-cols-3">{filtered.map((story) => <StoryCard key={story.id} story={story} saved={saved.includes(story.id)} onSave={onSave} />)}</div>{filtered.length === 0 && <div className="py-20 text-center"><p className="font-editorial text-3xl">Nothing filed here yet.</p></div>}</main>;
+  const filtered = section === 'Archive' ? stories : stories.filter((s) => s.section === section);
+  return <main className="mx-auto max-w-[1320px] px-5 py-9 page-in lg:px-8 lg:py-14"><div className="mb-8 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">{section}</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">The people, places and small arguments shaping life in Wheaton.</p></div><div className="grid gap-x-7 gap-y-12 md:grid-cols-3">{filtered.map((story) => <StoryCard key={story.id} story={story} saved={saved.includes(story.id)} onSave={onSave} />)}</div>{filtered.length === 0 && <div className="py-20 text-center"><p className="font-editorial text-3xl">Nothing filed here yet.</p></div>}</main>;
 }
 
 function ArticlePage({ saved, onSave }: { saved: string[]; onSave: (id: string) => void }) {
   const [, params] = useRoute('/article/:id'); const story = stories.find((s) => s.id === params?.id) ?? stories[0];
-  return <main className="page-in"><div className="mx-auto max-w-[1120px] px-5 py-9 lg:px-8 lg:py-14"><Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-back-home">← Back to front page</Link><div className="max-w-4xl"><p className="mb-4 text-[10px] uppercase tracking-[.21em] text-accent">{story.section}</p><h1 className="font-editorial text-[clamp(3rem,8vw,7.8rem)] font-bold leading-[.82] tracking-[-.07em]">{story.title}</h1><p className="mt-7 max-w-2xl font-editorial text-2xl leading-tight text-muted-foreground md:text-3xl">{story.dek}</p><div className="mt-7 flex flex-wrap items-center gap-5 text-[10px] uppercase tracking-[.16em]"><span>By {story.byline}</span><span className="text-muted-foreground">Published October 17, 2024</span><span className="flex items-center gap-2 text-muted-foreground"><Clock3 size={14} /> {story.time}</span><SaveButton storyId={story.id} saved={saved.includes(story.id)} onSave={onSave} /></div></div><img src={story.image} alt="" className="mt-10 max-h-[590px] w-full object-cover md:mt-14" /><div className="mx-auto mt-10 grid max-w-4xl gap-8 md:grid-cols-[80px_1fr]"><aside className="hidden border-t border-border pt-3 text-[10px] uppercase tracking-[.16em] text-muted-foreground md:block">The<br />story</aside><div className="prose prose-lg max-w-none font-editorial leading-relaxed text-foreground"><p className="lead text-2xl">There are places in town that only reveal themselves when the usual rush has gone somewhere else. This is one of them.</p><p>At 8:42 on a Tuesday evening, the lights are still on at the library. Not all of them—just the patient ones over the long tables, where a handful of neighbors have settled in with the quiet purpose of people who know a good room when they find one.</p><p>“You start to notice who comes in,” says a volunteer behind the desk. “The same faces, different reasons. That’s the nice thing about a library. Nobody needs to explain themselves.”</p><blockquote>“A town is made from the things people do when nobody is keeping score.”</blockquote><p>Outside, Main Street is doing its usual evening impression: one dog, two bicycles, a delivery van that has missed its turn. Inside, the last reader turns a page. The room holds.</p><p className="text-sm uppercase tracking-[.16em] text-muted-foreground">Reporting by {story.byline} · Photographs from the Weekly archive</p></div></div></div><Footer /></main>;
+  return <main className="page-in"><div className="mx-auto max-w-[1120px] px-5 py-9 lg:px-8 lg:py-14"><Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-back-home">← Back to front page</Link><div className="max-w-4xl"><p className="mb-4 text-[10px] uppercase tracking-[.21em] text-accent">{story.section}</p><h1 className="font-editorial text-[clamp(3rem,8vw,7.8rem)] font-bold leading-[.82] tracking-[-.07em]">{story.title}</h1><p className="mt-7 max-w-2xl font-editorial text-2xl leading-tight text-muted-foreground md:text-3xl">{story.dek}</p><div className="mt-7 flex flex-wrap items-center gap-5 text-[10px] uppercase tracking-[.16em]"><span>By {story.byline}</span><span className="flex items-center gap-2 text-muted-foreground"><Clock3 size={14} /> {story.time}</span><SaveButton storyId={story.id} saved={saved.includes(story.id)} onSave={onSave} /></div></div><img src={story.image} alt="" className="mt-10 max-h-[590px] w-full object-cover md:mt-14" /><div className="mx-auto mt-10 grid max-w-4xl gap-8 md:grid-cols-[80px_1fr]"><aside className="hidden border-t border-border pt-3 text-[10px] uppercase tracking-[.16em] text-muted-foreground md:block">The<br />story</aside><div className="prose prose-lg max-w-none font-editorial leading-relaxed text-foreground"><p className="lead text-2xl">There are places in town that only reveal themselves when the usual rush has gone somewhere else. This is one of them.</p><p>At 8:42 on a Tuesday evening, the lights are still on at the library. Not all of them—just the patient ones over the long tables, where a handful of neighbors have settled in with the quiet purpose of people who know a good room when they find one.</p><p>“You start to notice who comes in,” says a volunteer behind the desk. “The same faces, different reasons. That’s the nice thing about a library. Nobody needs to explain themselves.”</p><blockquote>“A town is made from the things people do when nobody is keeping score.”</blockquote><p>Outside, Main Street is doing its usual evening impression: one dog, two bicycles, a delivery van that has missed its turn. Inside, the last reader turns a page. The room holds.</p><p className="text-sm uppercase tracking-[.16em] text-muted-foreground">Reporting by {story.byline} · Photographs from the Weekly archive</p></div></div></div><Footer /></main>;
 }
 
 function SearchPanel({ onClose }: { onClose: () => void }) {
@@ -144,7 +132,7 @@ function Footer() {
   return <footer className="border-t-[3px] border-foreground bg-primary text-primary-foreground">
     <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-12 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
       <div><h2 className="font-editorial text-5xl font-bold leading-[.82] tracking-[-.06em]">The Wheaton<br /><span className="font-normal">Weekly</span></h2><p className="mt-6 max-w-xs font-editorial text-lg text-primary-foreground/75">A local paper for a town with more going on than it lets on.</p></div>
-      <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">All sections</Link><Link href="/saved" data-testid="footer-link-saved">Saved stories</Link></div></div>
+      <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">Archive</Link><Link href="/saved" data-testid="footer-link-saved">Saved stories</Link></div></div>
       <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Stay close</p><p className="font-editorial text-lg text-primary-foreground/80">The good stuff, once a week. No noise. No breaking-news sirens.</p><button onClick={() => window.alert('You are on the list. Thursday mornings will now know where to find you.')} className="mt-4 border border-primary-foreground/50 px-4 py-2 text-[10px] uppercase tracking-[.15em] hover:bg-primary-foreground hover:text-primary" data-testid="footer-button-newsletter">Join the letter</button></div>
     </div>
     <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>© 2024 The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Made in town</span><Instagram size={14} /></span></div>
@@ -156,7 +144,7 @@ function Shell({ children, dark, setDark, onSearch, savedCount, fontScale, setFo
 }
 
 function RouterView({ saved, onSave, onSearch }: { saved: string[]; onSave: (id: string) => void; onSearch: () => void }) {
-  return <Switch><Route path="/" component={() => <HomePage saved={saved} onSave={onSave} onSearch={onSearch} />} /><Route path="/saved" component={() => <SavedPage saved={saved} onSave={onSave} />} /><Route path="/article/:id" component={() => <ArticlePage saved={saved} onSave={onSave} />} /><Route path="/section/:section" component={() => { const [, p] = useRoute('/section/:section'); const name = p?.section === 'civic-life' ? 'Civic life' : p?.section === 'all' ? 'All stories' : (p?.section ?? 'All stories'); return <SectionPage section={name} saved={saved} onSave={onSave} />; }} /><Route component={NotFound} /></Switch>;
+  return <Switch><Route path="/" component={() => <HomePage saved={saved} onSave={onSave} onSearch={onSearch} />} /><Route path="/saved" component={() => <SavedPage saved={saved} onSave={onSave} />} /><Route path="/article/:id" component={() => <ArticlePage saved={saved} onSave={onSave} />} /><Route path="/section/:section" component={() => <SectionPage section="Archive" saved={saved} onSave={onSave} />} /><Route component={NotFound} /></Switch>;
 }
 
 function App() {

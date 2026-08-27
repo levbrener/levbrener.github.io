@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Bookmark, BookmarkCheck, BookOpenText, ChevronRight, Clock3, Feather, Instagram, Menu, Moon, Newspaper, Plus, Search, Sun, Type, X, Minus } from 'lucide-react';
+import { Bookmark, BookmarkCheck, BookOpenText, ChevronRight, Clock3, Feather, Instagram, LockKeyhole, Menu, Moon, Newspaper, PenLine, Plus, Search, Sun, Type, X, Minus } from 'lucide-react';
 import { Link, Route, Switch, useLocation, useRoute } from 'wouter';
-import { type ReactNode } from 'react';
+import { type FormEvent, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -10,8 +10,8 @@ import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
 
-type Story = { id: string; section: string; title: string; dek: string; byline: string; time: string; image: string; featured?: boolean; color?: string };
-const stories: Story[] = [
+type Story = { id: string; section: string; title: string; dek: string; byline: string; time: string; image: string; body?: string; featured?: boolean; color?: string };
+const initialStories: Story[] = [
   { id: 'library-after-hours', section: 'Front page', title: 'The library after hours', dek: 'When the doors lock, a second kind of public life begins in Wheaton.', byline: 'Mara Bell', time: '8 min read', image: '/library.jpg', featured: true },
   { id: 'long-way-home', section: 'Field notes', title: 'The long way home', dek: 'A walk down Main Street, with no errands to run and nowhere much to be.', byline: 'Eli Tannen', time: '6 min read', image: '/main-street.jpg' },
   { id: 'soup-season', section: 'At the table', title: 'Soup season has arrived', dek: 'Three kitchens, four generations, one pot that keeps finding its way back.', byline: 'June Park', time: '4 min read', image: '/soup.jpg' },
@@ -19,6 +19,10 @@ const stories: Story[] = [
   { id: 'weather-window', section: 'Weather desk', title: 'A window for weather', dek: 'The forecast, with less false confidence and more useful detail.', byline: 'The Weekly desk', time: '3 min read', image: '/main-street.jpg' },
   { id: 'porch-light', section: 'People', title: 'Leave the porch light on', dek: 'Notes from a neighborhood that still believes in lingering.', byline: 'Owen Wirth', time: '7 min read', image: '/library.jpg' },
 ];
+let stories: Story[] = initialStories;
+const ARTICLES_KEY = 'wheaton-weekly-articles';
+const NEWSROOM_PASSWORD_KEY = 'wheaton-weekly-newsroom-password';
+const NEWSROOM_SESSION_KEY = 'wheaton-weekly-newsroom-session';
 
 function Logo({ compact = false }: { compact?: boolean }) {
   return <Link href="/" className={`flex items-center gap-3 no-underline ${compact ? 'gap-2' : ''}`} data-testid="link-home">
@@ -46,6 +50,7 @@ function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }
           <button onClick={() => setDark(!dark)} className="utility-button" data-testid="button-theme">{dark ? <Sun size={14} /> : <Moon size={14} />}<span className="hidden sm:inline">{dark ? 'Light' : 'Dark'}</span></button>
           <div className="utility-font" aria-label="Reading controls"><Type size={14} /><button onClick={() => setFontScale(Math.max(.9, fontScale - .05))} aria-label="Decrease text size" data-testid="button-font-smaller">−</button><button onClick={() => setFontScale(Math.min(1.15, fontScale + .05))} aria-label="Increase text size" data-testid="button-font-larger">＋</button></div>
           <Link href="/section/all" className="utility-link hidden sm:flex" data-testid="link-archive"><BookOpenText size={14} /> Archive</Link>
+          <Link href="/newsroom" className="utility-link hidden sm:flex" data-testid="link-newsroom"><PenLine size={14} /> Newsroom</Link>
           <span className="utility-divider" />
           <Link href="/saved" className="utility-link" data-testid="link-saved">Saved {savedCount > 0 && <span className="text-accent">({savedCount})</span>}</Link>
           <button onClick={() => window.alert('Subscriptions open on the first Thursday of every month. We saved your seat.')} className="utility-subscribe" data-testid="button-subscribe">Subscribe</button>
@@ -56,6 +61,7 @@ function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }
       <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-4 text-[11px] uppercase tracking-[.17em]">
         <Link href="/" onClick={() => setMenu(false)} data-testid="mobile-link-front">Front page</Link>
         <Link href="/section/all" onClick={() => setMenu(false)} data-testid="mobile-link-archive">Archive</Link>
+        <Link href="/newsroom" onClick={() => setMenu(false)} data-testid="mobile-link-newsroom">Newsroom</Link>
         <Link href="/saved" onClick={() => setMenu(false)} data-testid="mobile-link-saved">Saved stories ({savedCount})</Link>
       </div>
     </div>}
@@ -110,12 +116,93 @@ function HomePage({ saved, onSave, onSearch }: { saved: string[]; onSave: (id: s
 
 function SectionPage({ saved, onSave, section }: { saved: string[]; onSave: (id: string) => void; section: string }) {
   const filtered = section === 'Archive' ? stories : stories.filter((s) => s.section === section);
-  return <main className="mx-auto max-w-[1320px] px-5 py-9 page-in lg:px-8 lg:py-14"><div className="mb-8 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">{section}</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">The people, places and small arguments shaping life in Wheaton.</p></div><div className="grid gap-x-7 gap-y-12 md:grid-cols-3">{filtered.map((story) => <StoryCard key={story.id} story={story} saved={saved.includes(story.id)} onSave={onSave} />)}</div>{filtered.length === 0 && <div className="py-20 text-center"><p className="font-editorial text-3xl">Nothing filed here yet.</p></div>}</main>;
+  return <main className="mx-auto max-w-[1320px] px-5 py-9 page-in lg:px-8 lg:py-14"><Link href="/" className="mb-9 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-archive-back-home">← Back to front page</Link><div className="mb-8 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">{section}</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">The people, places and small arguments shaping life in Wheaton.</p></div><div className="grid gap-x-7 gap-y-12 md:grid-cols-3">{filtered.map((story) => <StoryCard key={story.id} story={story} saved={saved.includes(story.id)} onSave={onSave} />)}</div>{filtered.length === 0 && <div className="py-20 text-center"><p className="font-editorial text-3xl">Nothing filed here yet.</p></div>}</main>;
 }
 
 function ArticlePage({ saved, onSave }: { saved: string[]; onSave: (id: string) => void }) {
-  const [, params] = useRoute('/article/:id'); const story = stories.find((s) => s.id === params?.id) ?? stories[0];
-  return <main className="page-in"><div className="mx-auto max-w-[1120px] px-5 py-9 lg:px-8 lg:py-14"><Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-back-home">← Back to front page</Link><div className="max-w-4xl"><p className="mb-4 text-[10px] uppercase tracking-[.21em] text-accent">{story.section}</p><h1 className="font-editorial text-[clamp(3rem,8vw,7.8rem)] font-bold leading-[.82] tracking-[-.07em]">{story.title}</h1><p className="mt-7 max-w-2xl font-editorial text-2xl leading-tight text-muted-foreground md:text-3xl">{story.dek}</p><div className="mt-7 flex flex-wrap items-center gap-5 text-[10px] uppercase tracking-[.16em]"><span>By {story.byline}</span><span className="flex items-center gap-2 text-muted-foreground"><Clock3 size={14} /> {story.time}</span><SaveButton storyId={story.id} saved={saved.includes(story.id)} onSave={onSave} /></div></div><img src={story.image} alt="" className="mt-10 max-h-[590px] w-full object-cover md:mt-14" /><div className="mx-auto mt-10 grid max-w-4xl gap-8 md:grid-cols-[80px_1fr]"><aside className="hidden border-t border-border pt-3 text-[10px] uppercase tracking-[.16em] text-muted-foreground md:block">The<br />story</aside><div className="prose prose-lg max-w-none font-editorial leading-relaxed text-foreground"><p className="lead text-2xl">There are places in town that only reveal themselves when the usual rush has gone somewhere else. This is one of them.</p><p>At 8:42 on a Tuesday evening, the lights are still on at the library. Not all of them—just the patient ones over the long tables, where a handful of neighbors have settled in with the quiet purpose of people who know a good room when they find one.</p><p>“You start to notice who comes in,” says a volunteer behind the desk. “The same faces, different reasons. That’s the nice thing about a library. Nobody needs to explain themselves.”</p><blockquote>“A town is made from the things people do when nobody is keeping score.”</blockquote><p>Outside, Main Street is doing its usual evening impression: one dog, two bicycles, a delivery van that has missed its turn. Inside, the last reader turns a page. The room holds.</p><p className="text-sm uppercase tracking-[.16em] text-muted-foreground">Reporting by {story.byline} · Photographs from the Weekly archive</p></div></div></div><Footer /></main>;
+  const [, params] = useRoute('/article/:id');
+  const story = stories.find((s) => s.id === params?.id) ?? stories[0];
+  const paragraphs = story.body?.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean) ?? [
+    'There are places in town that only reveal themselves when the usual rush has gone somewhere else. This is one of them.',
+    'At 8:42 on a Tuesday evening, the lights are still on at the library. Not all of them—just the patient ones over the long tables, where a handful of neighbors have settled in with the quiet purpose of people who know a good room when they find one.',
+    '“You start to notice who comes in,” says a volunteer behind the desk. “The same faces, different reasons. That’s the nice thing about a library. Nobody needs to explain themselves.”',
+    'Outside, Main Street is doing its usual evening impression: one dog, two bicycles, a delivery van that has missed its turn. Inside, the last reader turns a page. The room holds.',
+  ];
+  return <main className="page-in"><div className="mx-auto max-w-[1120px] px-5 py-9 lg:px-8 lg:py-14"><Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-back-home">← Back to front page</Link><div className="max-w-4xl"><p className="mb-4 text-[10px] uppercase tracking-[.21em] text-accent">{story.section}</p><h1 className="font-editorial text-[clamp(3rem,8vw,7.8rem)] font-bold leading-[.82] tracking-[-.07em]">{story.title}</h1><p className="mt-7 max-w-2xl font-editorial text-2xl leading-tight text-muted-foreground md:text-3xl">{story.dek}</p><div className="mt-7 flex flex-wrap items-center gap-5 text-[10px] uppercase tracking-[.16em]"><span>By {story.byline}</span><span className="flex items-center gap-2 text-muted-foreground"><Clock3 size={14} /> {story.time}</span><SaveButton storyId={story.id} saved={saved.includes(story.id)} onSave={onSave} /></div></div><img src={story.image} alt="" className="mt-10 max-h-[590px] w-full object-cover md:mt-14" /><div className="mx-auto mt-10 grid max-w-4xl gap-8 md:grid-cols-[80px_1fr]"><aside className="hidden border-t border-border pt-3 text-[10px] uppercase tracking-[.16em] text-muted-foreground md:block">The<br />story</aside><div className="prose prose-lg max-w-none font-editorial leading-relaxed text-foreground">{paragraphs.map((paragraph, index) => <p key={`${story.id}-paragraph-${index}`} className={index === 0 ? 'lead text-2xl' : undefined}>{paragraph}</p>)}<p className="text-sm uppercase tracking-[.16em] text-muted-foreground">Reporting by {story.byline} · Photographs from the Weekly archive</p></div></div></div><Footer /></main>;
+}
+
+function NewsroomPage({ onPublish }: { onPublish: (story: Story) => void }) {
+  const [configuredPassword, setConfiguredPassword] = useState<string | null>(() => typeof window === 'undefined' ? null : window.localStorage.getItem(NEWSROOM_PASSWORD_KEY));
+  const [unlocked, setUnlocked] = useState(() => typeof window !== 'undefined' && window.sessionStorage.getItem(NEWSROOM_SESSION_KEY) === 'unlocked');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [status, setStatus] = useState('');
+  const [headline, setHeadline] = useState('');
+  const [section, setSection] = useState('Front page');
+  const [byline, setByline] = useState('The Weekly desk');
+  const [dek, setDek] = useState('');
+  const [body, setBody] = useState('');
+  const [image, setImage] = useState('/main-street.jpg');
+
+  const savePassword = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (password.trim().length < 6) {
+      setPasswordError('Use at least six characters for the newsroom password.');
+      return;
+    }
+    window.localStorage.setItem(NEWSROOM_PASSWORD_KEY, password);
+    window.sessionStorage.setItem(NEWSROOM_SESSION_KEY, 'unlocked');
+    setConfiguredPassword(password);
+    setUnlocked(true);
+    setPassword('');
+    setPasswordError('');
+  };
+
+  const unlock = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (password !== configuredPassword) {
+      setPasswordError('That password did not match.');
+      return;
+    }
+    window.sessionStorage.setItem(NEWSROOM_SESSION_KEY, 'unlocked');
+    setUnlocked(true);
+    setPassword('');
+    setPasswordError('');
+  };
+
+  const publish = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const cleanHeadline = headline.trim();
+    const cleanBody = body.trim();
+    if (!cleanHeadline || !cleanBody) return;
+    const words = cleanBody.split(/\s+/).filter(Boolean).length;
+    const id = `${cleanHeadline.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now()}`;
+    onPublish({
+      id,
+      section: section.trim() || 'Front page',
+      title: cleanHeadline,
+      dek: dek.trim() || 'A new story from The Wheaton Weekly.',
+      byline: byline.trim() || 'The Weekly desk',
+      time: `${Math.max(1, Math.ceil(words / 200))} min read`,
+      image: image.trim() || '/main-street.jpg',
+      body: cleanBody,
+      featured: true,
+    });
+    setHeadline('');
+    setDek('');
+    setBody('');
+    setStatus('Published to the front page and Archive.');
+  };
+
+  if (!configuredPassword) {
+    return <main className="mx-auto max-w-[1320px] px-5 py-10 page-in lg:px-8 lg:py-16"><div className="newsroom-gate"><LockKeyhole size={28} className="mx-auto mb-5 text-accent" strokeWidth={1.3} /><p className="newsroom-kicker">The Wheaton Weekly</p><h1 className="font-editorial text-5xl leading-none">Open the newsroom.</h1><p className="newsroom-copy">Set a password for this browser’s private publishing desk. You’ll use it whenever you return to publish another story.</p><form onSubmit={savePassword} className="newsroom-form"><input type="text" name="username" value="editor" autoComplete="username" readOnly className="sr-only" tabIndex={-1} aria-hidden="true" /><label htmlFor="new-password">Create a newsroom password</label><input id="new-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" minLength={6} required /><button className="newsroom-primary" type="submit">Create password</button>{passwordError && <p className="newsroom-error">{passwordError}</p>}</form></div></main>;
+  }
+
+  if (!unlocked) {
+    return <main className="mx-auto max-w-[1320px] px-5 py-10 page-in lg:px-8 lg:py-16"><div className="newsroom-gate"><LockKeyhole size={28} className="mx-auto mb-5 text-accent" strokeWidth={1.3} /><p className="newsroom-kicker">The Wheaton Weekly</p><h1 className="font-editorial text-5xl leading-none">Welcome back.</h1><p className="newsroom-copy">The publishing desk is password protected on this browser.</p><form onSubmit={unlock} className="newsroom-form"><input type="text" name="username" value="editor" autoComplete="username" readOnly className="sr-only" tabIndex={-1} aria-hidden="true" /><label htmlFor="newsroom-password">Newsroom password</label><input id="newsroom-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required /><button className="newsroom-primary" type="submit">Enter newsroom</button>{passwordError && <p className="newsroom-error">{passwordError}</p>}</form></div></main>;
+  }
+
+  return <main className="mx-auto max-w-[1320px] px-5 py-10 page-in lg:px-8 lg:py-16"><div className="mb-10 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><div className="flex flex-wrap items-end justify-between gap-5"><div><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">Newsroom</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">Publish the stories that belong in the paper.</p></div><button className="newsroom-lock" type="button" onClick={() => { window.sessionStorage.removeItem(NEWSROOM_SESSION_KEY); setUnlocked(false); }}>Lock desk</button></div></div><div className="newsroom-layout"><form onSubmit={publish} className="newsroom-publish-form"><div className="newsroom-form-heading"><PenLine size={20} className="text-accent" /><div><p className="newsroom-kicker">New story</p><h2 className="font-editorial text-3xl">File a piece</h2></div></div><label htmlFor="story-headline">Headline</label><input id="story-headline" value={headline} onChange={(event) => setHeadline(event.target.value)} placeholder="A headline worth reading" required /><div className="newsroom-two-col"><div><label htmlFor="story-section">Section</label><input id="story-section" value={section} onChange={(event) => setSection(event.target.value)} placeholder="Front page" /></div><div><label htmlFor="story-byline">Byline</label><input id="story-byline" value={byline} onChange={(event) => setByline(event.target.value)} placeholder="The Weekly desk" /></div></div><label htmlFor="story-dek">Short description</label><textarea id="story-dek" value={dek} onChange={(event) => setDek(event.target.value)} placeholder="A sentence that gives readers a reason to keep going." rows={3} /><label htmlFor="story-body">Article</label><textarea id="story-body" value={body} onChange={(event) => setBody(event.target.value)} placeholder="Write the story here. Use a blank line between paragraphs." rows={12} required /><label htmlFor="story-image">Image path or URL</label><input id="story-image" value={image} onChange={(event) => setImage(event.target.value)} placeholder="/main-street.jpg" /><button className="newsroom-primary newsroom-publish-button" type="submit">Publish article</button>{status && <p className="newsroom-success">{status}</p>}<p className="newsroom-note">Published stories are saved in this browser and appear at the top of the front page and in Archive.</p></form><aside className="newsroom-side"><p className="newsroom-kicker">The paper so far</p><h2 className="font-editorial text-3xl">Recent filing</h2><div className="newsroom-list">{stories.slice(0, 6).map((story) => <Link href={`/article/${story.id}`} key={story.id}><span>{story.section}</span><strong>{story.title}</strong></Link>)}</div></aside></div></main>;
 }
 
 function SearchPanel({ onClose }: { onClose: () => void }) {
@@ -131,11 +218,11 @@ function SavedPage({ saved, onSave }: { saved: string[]; onSave: (id: string) =>
 function Footer() {
   return <footer className="border-t-[3px] border-foreground bg-primary text-primary-foreground">
     <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-12 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
-      <div><h2 className="font-editorial text-5xl font-bold leading-[.82] tracking-[-.06em]">The Wheaton<br /><span className="font-normal">Weekly</span></h2><p className="mt-6 max-w-xs font-editorial text-lg text-primary-foreground/75">A local paper for a town with more going on than it lets on.</p></div>
+      <div><h2 className="font-editorial text-5xl font-bold leading-[.82] tracking-[-.06em]">The Wheaton<br /><span className="font-normal">Weekly</span></h2></div>
       <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">Archive</Link><Link href="/saved" data-testid="footer-link-saved">Saved stories</Link></div></div>
       <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Stay close</p><p className="font-editorial text-lg text-primary-foreground/80">The good stuff, once a week. No noise. No breaking-news sirens.</p><button onClick={() => window.alert('You are on the list. Thursday mornings will now know where to find you.')} className="mt-4 border border-primary-foreground/50 px-4 py-2 text-[10px] uppercase tracking-[.15em] hover:bg-primary-foreground hover:text-primary" data-testid="footer-button-newsletter">Join the letter</button></div>
     </div>
-    <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>© 2024 The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Made in town</span><Instagram size={14} /></span></div>
+    <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>© 2024 The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Silver Spring, Maryland</span><Instagram size={14} /></span></div>
   </footer>;
 }
 
@@ -143,14 +230,32 @@ function Shell({ children, dark, setDark, onSearch, savedCount, fontScale, setFo
   return <><Header dark={dark} setDark={setDark} onSearch={onSearch} savedCount={savedCount} fontScale={fontScale} setFontScale={setFontScale} />{children}</>;
 }
 
-function RouterView({ saved, onSave, onSearch }: { saved: string[]; onSave: (id: string) => void; onSearch: () => void }) {
-  return <Switch><Route path="/" component={() => <HomePage saved={saved} onSave={onSave} onSearch={onSearch} />} /><Route path="/saved" component={() => <SavedPage saved={saved} onSave={onSave} />} /><Route path="/article/:id" component={() => <ArticlePage saved={saved} onSave={onSave} />} /><Route path="/section/:section" component={() => <SectionPage section="Archive" saved={saved} onSave={onSave} />} /><Route component={NotFound} /></Switch>;
+function RouterView({ saved, onSave, onSearch, onPublish }: { saved: string[]; onSave: (id: string) => void; onSearch: () => void; onPublish: (story: Story) => void }) {
+  return <Switch><Route path="/" component={() => <HomePage saved={saved} onSave={onSave} onSearch={onSearch} />} /><Route path="/saved" component={() => <SavedPage saved={saved} onSave={onSave} />} /><Route path="/article/:id" component={() => <ArticlePage saved={saved} onSave={onSave} />} /><Route path="/section/:section" component={() => <SectionPage section="Archive" saved={saved} onSave={onSave} />} /><Route path="/newsroom" component={() => <NewsroomPage onPublish={onPublish} />} /><Route component={NotFound} /></Switch>;
 }
 
 function App() {
   const [dark, setDark] = useState(false); const [saved, setSaved] = useState<string[]>([]); const [searchOpen, setSearchOpen] = useState(false); const [fontScale, setFontScale] = useState(1);
+  const [articleList, setArticleList] = useState<Story[]>(() => {
+    if (typeof window === 'undefined') return initialStories;
+    const raw = window.localStorage.getItem(ARTICLES_KEY);
+    if (!raw) return initialStories;
+    try {
+      const stored = JSON.parse(raw) as Story[];
+      return Array.isArray(stored) && stored.length > 0 ? stored : initialStories;
+    } catch {
+      return initialStories;
+    }
+  });
+  stories = articleList;
   const toggleSaved = (id: string) => setSaved((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-  return <QueryClientProvider client={queryClient}><TooltipProvider><div className={dark ? 'dark min-h-[100dvh]' : 'min-h-[100dvh]'} style={{ fontSize: `${fontScale}em` }}><Shell dark={dark} setDark={setDark} onSearch={() => setSearchOpen(true)} savedCount={saved.length} fontScale={fontScale} setFontScale={setFontScale}><RouterView saved={saved} onSave={toggleSaved} onSearch={() => setSearchOpen(true)} /></Shell>{searchOpen && <SearchPanel onClose={() => setSearchOpen(false)} />}</div><Toaster /></TooltipProvider></QueryClientProvider>;
+  const publishStory = (story: Story) => {
+    const nextStories = [story, ...articleList];
+    stories = nextStories;
+    setArticleList(nextStories);
+    window.localStorage.setItem(ARTICLES_KEY, JSON.stringify(nextStories));
+  };
+  return <QueryClientProvider client={queryClient}><TooltipProvider><div className={dark ? 'dark min-h-[100dvh]' : 'min-h-[100dvh]'} style={{ fontSize: `${fontScale}em` }}><Shell dark={dark} setDark={setDark} onSearch={() => setSearchOpen(true)} savedCount={saved.length} fontScale={fontScale} setFontScale={setFontScale}><RouterView saved={saved} onSave={toggleSaved} onSearch={() => setSearchOpen(true)} onPublish={publishStory} /></Shell>{searchOpen && <SearchPanel onClose={() => setSearchOpen(false)} />}</div><Toaster /></TooltipProvider></QueryClientProvider>;
 }
 
 export default App;

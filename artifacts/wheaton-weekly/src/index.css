@@ -220,7 +220,7 @@
 }
 .site-nav a:hover,
 .site-nav a:focus-visible { color: hsl(var(--accent)); }
-.site-nav .saved-nav-link { margin-left: auto; border-left: 1px solid hsl(var(--border)); }
+.site-nav .saved-nav-link { margin-left: 0; border-left: 0; }
 
 /* The reference uses editorial rules and compact captions in place of app-card chrome. */
 main { background: hsl(var(--background)); }
@@ -246,4 +246,141 @@ main > section { border-color: hsl(var(--border)); }
   .site-nav { overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; }
   .site-nav a { padding: 5px 9px; }
   .site-nav .saved-nav-link { margin-left: 0; }
+}
+
+.newsroom-gate {
+  max-width: 460px;
+  margin: 20px auto 50px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  padding: 38px;
+  text-align: center;
+}
+.newsroom-kicker {
+  color: hsl(var(--accent));
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+.newsroom-copy {
+  color: hsl(var(--muted-foreground));
+  font-family: 'PT Serif', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 18px auto 25px;
+  max-width: 350px;
+}
+.newsroom-form,
+.newsroom-publish-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.newsroom-form label,
+.newsroom-publish-form label {
+  color: hsl(var(--muted-foreground));
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  margin-top: 8px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.newsroom-form input,
+.newsroom-publish-form input,
+.newsroom-publish-form textarea {
+  border: 1px solid hsl(var(--foreground));
+  border-radius: 2px;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'PT Serif', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.45;
+  padding: 10px 12px;
+  width: 100%;
+}
+.newsroom-form input:focus,
+.newsroom-publish-form input:focus,
+.newsroom-publish-form textarea:focus {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 1px;
+}
+.newsroom-primary {
+  border: 1px solid hsl(var(--accent));
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  margin-top: 10px;
+  padding: 11px 18px;
+  text-transform: uppercase;
+  transition: background .2s ease, color .2s ease;
+}
+.newsroom-primary:hover { background: hsl(var(--foreground)); border-color: hsl(var(--foreground)); }
+.newsroom-error { color: hsl(var(--accent)); font-family: 'Inter', sans-serif; font-size: 11px; margin: 5px 0 0; }
+.newsroom-success { color: #2f6b4f; font-family: 'Inter', sans-serif; font-size: 11px; margin: 5px 0 0; }
+.newsroom-layout {
+  display: grid;
+  align-items: start;
+  gap: 50px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+}
+.newsroom-publish-form {
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 24px;
+}
+.newsroom-form-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.newsroom-form-heading h2 { margin: 0; }
+.newsroom-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.newsroom-lock {
+  border: 1px solid hsl(var(--foreground));
+  background: transparent;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: .13em;
+  padding: 8px 12px;
+  text-transform: uppercase;
+}
+.newsroom-lock:hover { border-color: hsl(var(--accent)); color: hsl(var(--accent)); }
+.newsroom-note {
+  color: hsl(var(--muted-foreground));
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+.newsroom-side {
+  border-top: 3px solid hsl(var(--foreground));
+  padding-top: 16px;
+}
+.newsroom-list { margin-top: 20px; }
+.newsroom-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-bottom: 1px solid hsl(var(--border));
+  padding: 13px 0;
+}
+.newsroom-list a:hover strong { color: hsl(var(--accent)); }
+.newsroom-list span {
+  color: hsl(var(--accent));
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.newsroom-list strong { font-family: 'Playfair Display', Georgia, serif; font-size: 21px; line-height: 1.15; transition: color .2s ease; }
+@media (max-width: 800px) {
+  .newsroom-layout { grid-template-columns: 1fr; gap: 38px; }
+  .newsroom-two-col { grid-template-columns: 1fr; gap: 8px; }
+  .newsroom-gate { padding: 28px 20px; }
 }

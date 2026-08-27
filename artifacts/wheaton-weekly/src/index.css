@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,500;1,600&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -20,45 +20,45 @@
 }
 
 :root {
-  --background: 39 42% 93%; --foreground: 174 28% 15%;
-  --card: 39 45% 97%; --card-foreground: 174 28% 15%; --card-border: 36 22% 79%;
-  --popover: 39 45% 97%; --popover-foreground: 174 28% 15%; --popover-border: 36 22% 79%;
-  --primary: 174 42% 28%; --primary-foreground: 39 45% 97%;
-  --secondary: 36 28% 84%; --secondary-foreground: 174 28% 15%;
-  --muted: 37 25% 87%; --muted-foreground: 174 12% 39%;
-  --accent: 11 68% 54%; --accent-foreground: 39 45% 97%;
-  --destructive: 3 58% 44%; --destructive-foreground: 39 45% 97%;
-  --border: 36 22% 76%; --input: 36 22% 76%; --ring: 11 68% 54%;
-  --app-font-sans: 'DM Mono', monospace; --app-font-serif: 'Newsreader', Georgia, serif; --app-font-mono: 'DM Mono', monospace;
-  --radius: 0.35rem; --shadow-sm: 0 2px 0 rgba(23,58,54,.08), 0 8px 22px rgba(23,58,54,.06);
-  --shadow-lg: 0 3px 0 rgba(23,58,54,.09), 0 18px 40px rgba(23,58,54,.12);
-  --elevate-1: rgba(23,58,54,.04); --elevate-2: rgba(23,58,54,.08);
-  --primary-border: hsl(174 42% 22%); --secondary-border: hsl(36 22% 72%); --muted-border: hsl(36 22% 76%); --accent-border: hsl(11 68% 47%);
+  --background: 45 33% 97%; --foreground: 0 0% 10%;
+  --card: 45 33% 97%; --card-foreground: 0 0% 10%; --card-border: 44 17% 74%;
+  --popover: 45 33% 97%; --popover-foreground: 0 0% 10%; --popover-border: 44 17% 74%;
+  --primary: 355 66% 40%; --primary-foreground: 45 33% 97%;
+  --secondary: 44 25% 92%; --secondary-foreground: 0 0% 10%;
+  --muted: 44 25% 92%; --muted-foreground: 42 5% 42%;
+  --accent: 355 66% 40%; --accent-foreground: 45 33% 97%;
+  --destructive: 355 66% 32%; --destructive-foreground: 45 33% 97%;
+  --border: 44 17% 76%; --input: 44 17% 76%; --ring: 355 66% 40%;
+  --app-font-sans: 'Inter', sans-serif; --app-font-serif: 'PT Serif', Georgia, serif; --app-font-mono: 'Inter', sans-serif;
+  --radius: 0.2rem; --shadow-sm: 0 2px 12px rgba(0,0,0,.05);
+  --shadow-lg: 0 10px 28px rgba(0,0,0,.08);
+  --elevate-1: rgba(0,0,0,.03); --elevate-2: rgba(0,0,0,.07);
+  --primary-border: hsl(355 66% 34%); --secondary-border: hsl(44 17% 70%); --muted-border: hsl(44 17% 76%); --accent-border: hsl(355 66% 34%);
 }
 
 .dark {
-  --background: 174 29% 11%; --foreground: 39 37% 90%;
-  --card: 174 25% 15%; --card-foreground: 39 37% 90%; --card-border: 174 15% 27%;
-  --popover: 174 25% 15%; --popover-foreground: 39 37% 90%; --popover-border: 174 15% 27%;
-  --primary: 38 67% 68%; --primary-foreground: 174 29% 11%;
-  --secondary: 174 18% 22%; --secondary-foreground: 39 37% 90%;
-  --muted: 174 17% 21%; --muted-foreground: 39 14% 67%;
-  --accent: 11 67% 64%; --accent-foreground: 174 29% 11%;
-  --destructive: 4 63% 62%; --destructive-foreground: 174 29% 11%;
-  --border: 174 15% 27%; --input: 174 15% 30%; --ring: 11 67% 64%;
-  --primary-border: hsl(38 67% 61%); --secondary-border: hsl(174 15% 32%); --muted-border: hsl(174 15% 27%); --accent-border: hsl(11 67% 56%);
+  --background: 0 0% 10%; --foreground: 45 24% 92%;
+  --card: 0 0% 10%; --card-foreground: 45 24% 92%; --card-border: 0 0% 24%;
+  --popover: 0 0% 10%; --popover-foreground: 45 24% 92%; --popover-border: 0 0% 24%;
+  --primary: 355 56% 54%; --primary-foreground: 45 24% 96%;
+  --secondary: 0 0% 16%; --secondary-foreground: 45 24% 92%;
+  --muted: 0 0% 16%; --muted-foreground: 42 8% 68%;
+  --accent: 355 56% 60%; --accent-foreground: 0 0% 10%;
+  --destructive: 355 56% 54%; --destructive-foreground: 45 24% 96%;
+  --border: 0 0% 24%; --input: 0 0% 28%; --ring: 355 56% 60%;
+  --primary-border: hsl(355 56% 48%); --secondary-border: hsl(0 0% 30%); --muted-border: hsl(0 0% 24%); --accent-border: hsl(355 56% 52%);
   --elevate-1: rgba(255,255,255,.04); --elevate-2: rgba(255,255,255,.08);
 }
 
 @layer base {
   * { @apply border-border; }
   html { scroll-behavior: smooth; }
-  body { @apply font-sans antialiased bg-background text-foreground; margin: 0; }
+  body { @apply antialiased bg-background text-foreground; margin: 0; font-family: var(--app-font-serif); font-size: 18px; line-height: 1.75; transition: background .3s, color .3s; }
   button, input { font: inherit; }
 }
 
 @layer utilities {
-  .font-editorial { font-family: var(--app-font-serif); }
+  .font-editorial { font-family: 'Playfair Display', Georgia, serif; }
   .font-mono-ui { font-family: var(--app-font-mono); }
   .paper-rule { border-top: 1px solid hsl(var(--border)); }
   .paper-double-rule { border-top: 3px double hsl(var(--foreground)); }
@@ -72,3 +72,178 @@
 @keyframes page-in { from { opacity: 0; } to { opacity: 1; } }
 .page-in { animation: page-in .35s ease both; }
 ::selection { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+
+/* Reference treatment: the paper is the interface. Keep the shell quiet,
+   typographic, and ruled rather than turning it into a conventional app bar. */
+.site-header {
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+}
+
+.utility-bar {
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.utility-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 1320px;
+  padding: 9px 32px 8px;
+}
+
+.utility-date { white-space: nowrap; }
+.utility-actions { display: flex; align-items: center; gap: 8px; }
+.utility-button,
+.utility-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color .2s ease;
+}
+.utility-button:hover,
+.utility-link:hover { color: hsl(var(--accent)); }
+.utility-font {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  border-left: 1px solid hsl(var(--border));
+  padding-left: 10px;
+}
+.utility-font button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+.utility-font button:hover { color: hsl(var(--accent)); }
+.utility-divider { height: 16px; border-left: 1px solid hsl(var(--border)); margin: 0 4px; }
+.utility-subscribe {
+  border: 1px solid hsl(var(--border));
+  background: transparent;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: .17em;
+  padding: 6px 11px;
+  text-transform: uppercase;
+  transition: all .2s ease;
+}
+.utility-subscribe:hover { border-color: hsl(var(--accent)); background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+.mobile-menu { border-bottom: 1px solid hsl(var(--border)); background: hsl(var(--background)); }
+
+.masthead-shell { padding-top: 26px; }
+.masthead {
+  padding: 0 0 14px;
+  text-align: center;
+}
+.masthead-eyebrow {
+  color: hsl(var(--accent));
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  margin: 0 0 5px;
+  text-transform: uppercase;
+}
+.masthead h1 {
+  color: hsl(var(--foreground));
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: .8;
+  margin: 0;
+}
+.masthead h1 span { font-weight: 500; }
+.masthead-tagline {
+  color: hsl(var(--muted-foreground));
+  font-family: 'PT Serif', Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+  margin: 14px 0 0;
+}
+.masthead-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid hsl(var(--foreground));
+  border-top: 3px solid hsl(var(--foreground));
+  color: hsl(var(--muted-foreground));
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: .17em;
+  padding: 7px 0;
+  text-transform: uppercase;
+}
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--background) / .96);
+  padding: 9px 0 10px;
+  backdrop-filter: blur(10px);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.site-nav a {
+  color: hsl(var(--muted-foreground));
+  padding: 5px 12px;
+  transition: color .2s ease;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible { color: hsl(var(--accent)); }
+.site-nav .saved-nav-link { margin-left: auto; border-left: 1px solid hsl(var(--border)); }
+
+/* The reference uses editorial rules and compact captions in place of app-card chrome. */
+main { background: hsl(var(--background)); }
+main > section { border-color: hsl(var(--border)); }
+.story-hover { border-color: hsl(var(--border)); }
+.story-hover:hover { transform: translateY(-2px); }
+.story-hover img { filter: grayscale(18%); }
+.story-hover h2,
+.story-hover h3 { font-family: 'Playfair Display', Georgia, serif; }
+.story-hover p { font-family: 'PT Serif', Georgia, serif; }
+.story-hover .border { border-color: hsl(var(--border)); }
+.prose { font-family: 'PT Serif', Georgia, serif; }
+.prose h1, .prose h2, .prose h3, .prose h4 { font-family: 'Playfair Display', Georgia, serif; }
+
+@media (max-width: 700px) {
+  .utility-inner { padding: 8px 18px; }
+  .utility-actions { gap: 5px; }
+  .utility-divider, .utility-font { display: none; }
+  .utility-subscribe { padding: 5px 8px; }
+  .masthead-shell { padding-top: 20px; }
+  .masthead h1 { font-size: clamp(3.35rem, 16vw, 5.5rem); }
+  .masthead-meta { font-size: 8px; letter-spacing: .1em; }
+  .site-nav { overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; }
+  .site-nav a { padding: 5px 9px; }
+  .site-nav .saved-nav-link { margin-left: 0; }
+}

@@ -37,41 +37,50 @@ function SaveButton({ storyId, saved, onSave }: { storyId: string; saved: boolea
 
 function Header({ dark, setDark, onSearch, savedCount, fontScale, setFontScale }: { dark: boolean; setDark: (value: boolean) => void; onSearch: () => void; savedCount: number; fontScale: number; setFontScale: (value: number) => void }) {
   const [menu, setMenu] = useState(false);
-  return <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur-md">
-    <div className="mx-auto flex max-w-[1320px] items-center justify-between px-5 py-4 lg:px-8">
-      <button className="md:hidden" onClick={() => setMenu(!menu)} data-testid="button-menu"><Menu size={22} /></button>
-      <Logo compact />
-      <div className="hidden items-center gap-6 md:flex">
-        <nav className="flex items-center gap-5 text-[10px] uppercase tracking-[.17em] text-muted-foreground" aria-label="Main navigation">
-          <Link href="/" className="hover:text-accent" data-testid="link-front-page">Front page</Link>
-          <Link href="/section/civic-life" className="hover:text-accent" data-testid="link-civic-life">Civic life</Link>
-          <Link href="/saved" className="hover:text-accent" data-testid="link-saved">Saved {savedCount > 0 && <span className="ml-1 text-accent">({savedCount})</span>}</Link>
-        </nav>
-        <span className="h-4 w-px bg-border" />
-        <button onClick={onSearch} className="text-muted-foreground hover:text-accent" data-testid="button-search"><Search size={18} /></button>
-        <button onClick={() => setDark(!dark)} className="text-muted-foreground hover:text-accent" data-testid="button-theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
-        <div className="flex items-center gap-1 border-l border-border pl-5" aria-label="Reading controls"><Type size={15} className="text-muted-foreground" /><button onClick={() => setFontScale(Math.max(.9, fontScale - .05))} className="p-1 text-muted-foreground hover:text-accent" data-testid="button-font-smaller"><Minus size={13} /></button><button onClick={() => setFontScale(Math.min(1.15, fontScale + .05))} className="p-1 text-muted-foreground hover:text-accent" data-testid="button-font-larger"><Plus size={13} /></button></div>
-        <Link href="/section/all" className="flex items-center gap-1 text-[10px] uppercase tracking-[.14em] text-muted-foreground hover:text-accent" data-testid="link-archive"><BookOpenText size={16} /> Archive</Link>
-        <button onClick={() => window.alert('Subscriptions open on the first Thursday of every month. We saved your seat.')} className="border border-border px-3 py-2 text-[10px] uppercase tracking-[.17em] hover:border-primary hover:bg-primary hover:text-primary-foreground" data-testid="button-subscribe">Subscribe</button>
-      </div>
-      <div className="md:hidden flex items-center gap-3">
-        <button onClick={onSearch} data-testid="button-search-mobile"><Search size={19} /></button>
-        <button onClick={() => setDark(!dark)} data-testid="button-theme-mobile">{dark ? <Sun size={19} /> : <Moon size={19} />}</button>
+  return <header className="site-header">
+    <div className="utility-bar">
+      <div className="utility-inner">
+        <div className="flex items-center gap-3">
+          <button className="md:hidden" onClick={() => setMenu(!menu)} aria-label="Open menu" data-testid="button-menu"><Menu size={18} /></button>
+          <span className="utility-date">Thursday, October 17, 2024</span>
+        </div>
+        <div className="utility-actions">
+          <button onClick={onSearch} className="utility-button utility-search" data-testid="button-search"><Search size={14} /><span className="hidden sm:inline">Search</span></button>
+          <button onClick={() => setDark(!dark)} className="utility-button" data-testid="button-theme">{dark ? <Sun size={14} /> : <Moon size={14} />}<span className="hidden sm:inline">{dark ? 'Light' : 'Dark'}</span></button>
+          <div className="utility-font" aria-label="Reading controls"><Type size={14} /><button onClick={() => setFontScale(Math.max(.9, fontScale - .05))} aria-label="Decrease text size" data-testid="button-font-smaller">−</button><button onClick={() => setFontScale(Math.min(1.15, fontScale + .05))} aria-label="Increase text size" data-testid="button-font-larger">＋</button></div>
+          <Link href="/section/all" className="utility-link hidden sm:flex" data-testid="link-archive"><BookOpenText size={14} /> Archive</Link>
+          <span className="utility-divider" />
+          <Link href="/saved" className="utility-link" data-testid="link-saved">Saved {savedCount > 0 && <span className="text-accent">({savedCount})</span>}</Link>
+          <button onClick={() => window.alert('Subscriptions open on the first Thursday of every month. We saved your seat.')} className="utility-subscribe" data-testid="button-subscribe">Subscribe</button>
+        </div>
       </div>
     </div>
-    {menu && <div className="border-t border-border px-5 py-4 md:hidden page-in">
-      <div className="flex flex-col gap-4 text-[11px] uppercase tracking-[.17em]"><Link href="/" onClick={() => setMenu(false)} data-testid="mobile-link-front">Front page</Link><Link href="/section/civic-life" onClick={() => setMenu(false)} data-testid="mobile-link-civic">Civic life</Link><Link href="/section/all" onClick={() => setMenu(false)} data-testid="mobile-link-archive">Archive</Link><Link href="/saved" onClick={() => setMenu(false)} data-testid="mobile-link-saved">Saved stories ({savedCount})</Link><div className="flex items-center gap-2"><Type size={15} /><button onClick={() => setFontScale(Math.max(.9, fontScale - .05))} className="border border-border p-2" data-testid="mobile-button-font-smaller"><Minus size={13} /></button><button onClick={() => setFontScale(Math.min(1.15, fontScale + .05))} className="border border-border p-2" data-testid="mobile-button-font-larger"><Plus size={13} /></button></div><button onClick={() => window.alert('Subscriptions open on the first Thursday of every month. We saved your seat.')} className="w-fit border border-border px-3 py-2" data-testid="mobile-button-subscribe">Subscribe</button></div>
+    {menu && <div className="mobile-menu page-in">
+      <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-4 text-[11px] uppercase tracking-[.17em]">
+        <Link href="/" onClick={() => setMenu(false)} data-testid="mobile-link-front">Front page</Link>
+        <Link href="/section/civic-life" onClick={() => setMenu(false)} data-testid="mobile-link-civic">Civic life</Link>
+        <Link href="/section/all" onClick={() => setMenu(false)} data-testid="mobile-link-archive">Archive</Link>
+        <Link href="/saved" onClick={() => setMenu(false)} data-testid="mobile-link-saved">Saved stories ({savedCount})</Link>
+      </div>
     </div>}
   </header>;
 }
 
-function Masthead() {
-  return <div className="mx-auto max-w-[1320px] px-5 pt-8 lg:px-8 lg:pt-12">
-    <div className="flex flex-col gap-5 border-b-[3px] border-foreground pb-5 md:flex-row md:items-end md:justify-between">
-      <div><p className="mb-3 text-[10px] uppercase tracking-[.24em] text-accent">Wheaton, Massachusetts · Vol. 04 · No. 18</p><h1 className="font-editorial text-[clamp(3.6rem,9vw,8.7rem)] font-bold leading-[.78] tracking-[-.07em]">The Wheaton<br /><span className="font-normal">Weekly</span></h1></div>
-      <div className="max-w-[260px] pb-1 text-right font-editorial text-lg leading-snug italic text-muted-foreground md:text-right">A smart, warm, slightly mischievous paper for the town we call ours.</div>
+function Masthead({ savedCount = 0 }: { savedCount?: number }) {
+  return <div className="masthead-shell mx-auto max-w-[1320px] px-5 lg:px-8">
+    <div className="masthead">
+      <p className="masthead-eyebrow">Wheaton’s newspaper of record since 1913</p>
+      <h1 className="font-editorial">The Wheaton<br /><span>Weekly</span></h1>
+      <p className="masthead-tagline">“All the news that’s fit to print — and then some neighborhood gossip.”</p>
     </div>
-    <div className="flex items-center justify-between border-b border-foreground py-2 text-[10px] uppercase tracking-[.18em]"><span>Thursday, October 17, 2024</span><span className="hidden md:inline">Printed with care · Read slowly</span><span>Free to read</span></div>
+    <div className="masthead-meta"><span>Thursday, October 17, 2024</span><span className="hidden md:inline">Printed with care · Read slowly</span><span>Free to read</span></div>
+    <nav className="site-nav" aria-label="Main navigation">
+      <Link href="/" data-testid="link-front-page">Front page</Link>
+      <Link href="/section/civic-life" data-testid="link-civic-life">Civic life</Link>
+      <Link href="/section/all" data-testid="link-all-sections">Around town</Link>
+      <Link href="/saved" className="saved-nav-link" data-testid="link-saved-nav">Saved {savedCount > 0 && <span>({savedCount})</span>}</Link>
+      <Link href="/section/all" className="hidden sm:block" data-testid="link-archive-nav">Archive</Link>
+    </nav>
   </div>;
 }
 
@@ -89,7 +98,7 @@ function StoryCard({ story, saved, onSave, large = false }: { story: Story; save
 
 function HomePage({ saved, onSave, onSearch }: { saved: string[]; onSave: (id: string) => void; onSearch: () => void }) {
   return <main className="page-in">
-    <Masthead />
+    <Masthead savedCount={saved.length} />
     <section className="mx-auto max-w-[1320px] px-5 py-8 lg:px-8 lg:py-12">
       <div className="mb-5 flex items-center justify-between"><div className="flex items-center gap-3"><span className="h-2 w-2 rounded-full bg-accent" /><span className="text-[10px] uppercase tracking-[.2em]">This week’s front page</span></div><button onClick={onSearch} className="hidden items-center gap-2 text-[10px] uppercase tracking-[.17em] text-muted-foreground hover:text-accent sm:flex" data-testid="button-search-stories">Search the paper <Search size={15} /></button></div>
       <StoryCard story={stories[0]} large saved={saved.includes(stories[0].id)} onSave={onSave} />

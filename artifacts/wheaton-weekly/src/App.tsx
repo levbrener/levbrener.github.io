@@ -47,6 +47,7 @@ function Header({ onSearch }: { onSearch: () => void }) {
       <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-4 text-[11px] uppercase tracking-[.17em]">
         <Link href="/" onClick={() => setMenu(false)} data-testid="mobile-link-front">Front page</Link>
         <Link href="/section/all" onClick={() => setMenu(false)} data-testid="mobile-link-archive">Archive</Link>
+        <Link href="/about" onClick={() => setMenu(false)} data-testid="mobile-link-about">About</Link>
       </div>
     </div>}
   </header>;
@@ -61,6 +62,7 @@ function Masthead() {
     <nav className="site-nav" aria-label="Main navigation">
       <Link href="/" data-testid="link-front-page">Front page</Link>
       <Link href="/section/all" data-testid="link-archive-nav">Archive</Link>
+      <Link href="/about" data-testid="link-about-nav">About</Link>
     </nav>
   </div>;
 }
@@ -91,6 +93,40 @@ function HomePage({ onSearch }: { onSearch: () => void }) {
   </main>;
 }
 
+function AboutPage() {
+  return <main className="page-in">
+    <div className="mx-auto max-w-[1320px] px-5 py-9 lg:px-8 lg:py-14">
+      <Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-about-back-home">← Back to front page</Link>
+      <div className="about-hero">
+        <p className="mb-4 text-[10px] uppercase tracking-[.22em] text-accent">About the paper</p>
+        <h1 className="font-editorial">A small paper for a place with a lot to say.</h1>
+        <p className="about-intro">The Wheaton Weekly is an independent neighborhood paper about the people, places and everyday arguments that make Silver Spring, Maryland feel like home.</p>
+      </div>
+      <div className="about-grid">
+        <div>
+          <p className="about-kicker">Why we’re here</p>
+          <h2 className="font-editorial">Pay attention to what lasts.</h2>
+          <p>We believe local news is more than a list of meetings and road closures. It is the baker who knows the regulars, the long walk that changes your mind, and the quiet work of keeping a neighborhood connected.</p>
+          <p>Our stories are reported with curiosity, care and enough room to let a place be complicated. No sirens. No shouting. Just the details that help a town recognize itself.</p>
+        </div>
+        <div className="about-fact">
+          <p className="about-kicker">The Weekly in brief</p>
+          <div className="about-fact-row"><span>Founded</span><strong>2026</strong></div>
+          <div className="about-fact-row"><span>Based in</span><strong>Silver Spring, Maryland</strong></div>
+          <div className="about-fact-row"><span>Coverage</span><strong>People, places &amp; daily life</strong></div>
+          <div className="about-fact-row"><span>Approach</span><strong>Local, independent, unhurried</strong></div>
+        </div>
+      </div>
+      <div className="about-rule">
+        <p className="about-kicker">A note from the desk</p>
+        <p className="about-quote font-editorial">“The best local stories make a familiar street feel newly worth walking.”</p>
+        <p className="about-signoff">— The editors of The Wheaton Weekly</p>
+      </div>
+    </div>
+    <Footer />
+  </main>;
+}
+
 function SectionPage({ section }: { section: string }) {
   const filtered = section === 'Archive' ? stories : stories.filter((s) => s.section === section);
   return <main className="mx-auto max-w-[1320px] px-5 py-9 page-in lg:px-8 lg:py-14"><Link href="/" className="mb-9 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-archive-back-home">← Back to front page</Link><div className="mb-8 border-b-[3px] border-foreground pb-5"><p className="mb-3 text-[10px] uppercase tracking-[.22em] text-accent">The Wheaton Weekly</p><h1 className="font-editorial text-6xl font-bold tracking-[-.06em] md:text-8xl">{section}</h1><p className="mt-3 max-w-lg font-editorial text-lg text-muted-foreground">The people, places and small arguments shaping life in Wheaton.</p></div><div className="grid gap-x-7 gap-y-12 md:grid-cols-3">{filtered.map((story) => <StoryCard key={story.id} story={story} />)}</div>{filtered.length === 0 && <div className="py-20 text-center"><p className="font-editorial text-3xl">Nothing filed here yet.</p></div>}</main>;
@@ -117,7 +153,7 @@ function Footer() {
   return <footer className="border-t-[3px] border-foreground bg-primary text-primary-foreground">
     <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-12 lg:grid-cols-[1.4fr_1fr] lg:px-8">
       <div><h2 className="font-editorial text-5xl font-bold leading-[.82] tracking-[-.06em]">The Wheaton<br /><span className="font-normal">Weekly</span></h2></div>
-      <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">Archive</Link></div></div>
+      <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">Archive</Link><Link href="/about" data-testid="footer-link-about">About</Link></div></div>
     </div>
     <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>© 2024 The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Silver Spring, Maryland</span><Instagram size={14} /></span></div>
   </footer>;
@@ -128,7 +164,7 @@ function Shell({ children, onSearch }: { children: ReactNode; onSearch: () => vo
 }
 
 function RouterView({ onSearch }: { onSearch: () => void }) {
-  return <Switch><Route path="/" component={() => <HomePage onSearch={onSearch} />} /><Route path="/article/:id" component={ArticlePage} /><Route path="/section/:section" component={() => <SectionPage section="Archive" />} /><Route component={NotFound} /></Switch>;
+  return <Switch><Route path="/" component={() => <HomePage onSearch={onSearch} />} /><Route path="/article/:id" component={ArticlePage} /><Route path="/section/:section" component={() => <SectionPage section="Archive" />} /><Route path="/about" component={AboutPage} /><Route component={NotFound} /></Switch>;
 }
 
 function App() {

@@ -94,37 +94,39 @@ function HomePage({ onSearch }: { onSearch: () => void }) {
 }
 
 function AboutPage() {
-  return <main className="page-in">
-    <div className="mx-auto max-w-[1320px] px-5 py-9 lg:px-8 lg:py-14">
-      <Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-about-back-home">← Back to front page</Link>
-      <div className="about-hero">
-        <p className="mb-4 text-[10px] uppercase tracking-[.22em] text-accent">About the paper</p>
-        <h1 className="font-editorial">A small paper for a place with a lot to say.</h1>
-        <p className="about-intro">The Wheaton Weekly is an independent neighborhood paper about the people, places and everyday arguments that make Silver Spring, Maryland feel like home.</p>
-      </div>
-      <div className="about-grid">
-        <div>
-          <p className="about-kicker">Why we’re here</p>
-          <h2 className="font-editorial">Pay attention to what lasts.</h2>
-          <p>We believe local news is more than a list of meetings and road closures. It is the baker who knows the regulars, the long walk that changes your mind, and the quiet work of keeping a neighborhood connected.</p>
-          <p>Our stories are reported with curiosity, care and enough room to let a place be complicated. No sirens. No shouting. Just the details that help a town recognize itself.</p>
+  return (
+    <main className="page-in">
+      <div className="mx-auto max-w-[1320px] px-5 py-9 lg:px-8 lg:py-14">
+        <Link href="/" className="mb-10 inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] text-accent" data-testid="link-about-back-home">← Back to front page</Link>
+        <div className="about-hero">
+          <p className="mb-4 text-[10px] uppercase tracking-[.22em] text-accent">About the paper</p>
+          <h1 className="font-editorial">Independent Reporting, Weekly Publications</h1>
+          <p className="about-intro">The Wheaton Weekly is an independent paper about the people, places and everyday arguments that make Silver Spring, Maryland feel like home.</p>
         </div>
-        <div className="about-fact">
-          <p className="about-kicker">The Weekly in brief</p>
-          <div className="about-fact-row"><span>Founded</span><strong>2026</strong></div>
-          <div className="about-fact-row"><span>Based in</span><strong>Silver Spring, Maryland</strong></div>
-          <div className="about-fact-row"><span>Coverage</span><strong>People, places &amp; daily life</strong></div>
-          <div className="about-fact-row"><span>Approach</span><strong>Local, independent, unhurried</strong></div>
+        <div className="about-grid">
+          <div>
+            <p className="about-kicker">Why we’re here</p>
+            <h2 className="font-editorial">Pay attention to what lasts.</h2>
+            <p>We believe local news is more than a list of meetings and road closures. It is the baker who knows the regulars, the long walk that changes your mind, and the quiet work of keeping a neighborhood connected.</p>
+            <p>Our stories are reported with curiosity, care and enough room to let a place be complicated. No sirens. No shouting. Just the details that help a town recognize itself.</p>
+          </div>
+          <div className="about-fact">
+            <p className="about-kicker">The Weekly in brief</p>
+            <div className="about-fact-row"><span>Founded</span><strong>2026</strong></div>
+            <div className="about-fact-row"><span>Based in</span><strong>Silver Spring, Maryland</strong></div>
+            <div className="about-fact-row"><span>Coverage</span><strong>People, places &amp; daily life</strong></div>
+            <div className="about-fact-row"><span>Approach</span><strong>Local, independent, unhurried</strong></div>
+          </div>
+        </div>
+        <div className="about-rule">
+          <p className="about-kicker">A note from the desk</p>
+          <p className="about-quote font-editorial">“The best local stories make a familiar street feel newly worth walking.”</p>
+          <p className="about-signoff">— The editors of The Wheaton Weekly</p>
         </div>
       </div>
-      <div className="about-rule">
-        <p className="about-kicker">A note from the desk</p>
-        <p className="about-quote font-editorial">“The best local stories make a familiar street feel newly worth walking.”</p>
-        <p className="about-signoff">— The editors of The Wheaton Weekly</p>
-      </div>
-    </div>
-    <Footer />
-  </main>;
+      <Footer />
+    </main>
+  );
 }
 
 function SectionPage({ section }: { section: string }) {

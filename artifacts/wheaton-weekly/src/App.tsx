@@ -103,24 +103,13 @@ function AboutPage() {
           <h1 className="font-editorial">Independent Reporting, Weekly Publications</h1>
         </div>
         <div className="about-grid">
-          <div>
-            <p className="about-kicker">Why we’re here</p>
-            <h2 className="font-editorial">Pay attention to what lasts.</h2>
-            <p>We believe local news is more than a list of meetings and road closures. It is the baker who knows the regulars, the long walk that changes your mind, and the quiet work of keeping a neighborhood connected.</p>
-            <p>Our stories are reported with curiosity, care and enough room to let a place be complicated. No sirens. No shouting. Just the details that help a town recognize itself.</p>
-          </div>
           <div className="about-fact">
             <p className="about-kicker">The Weekly in brief</p>
             <div className="about-fact-row"><span>Founded</span><strong>2026</strong></div>
             <div className="about-fact-row"><span>Based in</span><strong>Silver Spring, Maryland</strong></div>
             <div className="about-fact-row"><span>Coverage</span><strong>People, places &amp; daily life</strong></div>
-            <div className="about-fact-row"><span>Approach</span><strong>Local, independent, unhurried</strong></div>
+            <div className="about-fact-row"><span>Approach</span><strong>Local, independent</strong></div>
           </div>
-        </div>
-        <div className="about-rule">
-          <p className="about-kicker">A note from the desk</p>
-          <p className="about-quote font-editorial">“The best local stories make a familiar street feel newly worth walking.”</p>
-          <p className="about-signoff">— The editors of The Wheaton Weekly</p>
         </div>
       </div>
       <Footer />

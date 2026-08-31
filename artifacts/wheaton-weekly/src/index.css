@@ -237,7 +237,6 @@ main > section { border-color: hsl(var(--border)); }
   text-transform: uppercase;
 }
 .about-fact {
-  border-top: 3px solid hsl(var(--foreground));
   padding-top: 16px;
 }
 @media (min-width: 701px) {

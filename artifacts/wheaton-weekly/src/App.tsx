@@ -155,7 +155,7 @@ function Footer() {
       <div><h2 className="font-editorial text-5xl font-bold leading-[.82] tracking-[-.06em]">The Wheaton<br /><span className="font-normal">Weekly</span></h2></div>
       <div><p className="mb-4 text-[10px] uppercase tracking-[.2em] text-primary-foreground/55">Explore</p><div className="flex flex-col gap-3 text-sm"><Link href="/" data-testid="footer-link-front">Front page</Link><Link href="/section/all" data-testid="footer-link-sections">Archive</Link><Link href="/about" data-testid="footer-link-about">About</Link></div></div>
     </div>
-    <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>© 2024 The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Silver Spring, Maryland</span><Instagram size={14} /></span></div>
+     <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t border-primary-foreground/20 px-5 py-5 text-[9px] uppercase tracking-[.16em] text-primary-foreground/55 lg:px-8"><span>The Wheaton Weekly</span><span className="hidden items-center gap-5 md:flex"><span>Silver Spring, Maryland</span><Instagram size={14} /></span></div>
   </footer>;
 }
 

@@ -240,6 +240,9 @@ main > section { border-color: hsl(var(--border)); }
   border-top: 3px solid hsl(var(--foreground));
   padding-top: 16px;
 }
+@media (min-width: 701px) {
+  .about-fact { transform: translateX(-64px); }
+}
 .about-fact-row {
   align-items: baseline;
   border-bottom: 1px solid hsl(var(--border));

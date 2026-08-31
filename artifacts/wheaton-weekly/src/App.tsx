@@ -101,7 +101,6 @@ function AboutPage() {
         <div className="about-hero">
           <p className="mb-4 text-[10px] uppercase tracking-[.22em] text-accent">About the paper</p>
           <h1 className="font-editorial">Independent Reporting, Weekly Publications</h1>
-          <p className="about-intro">The Wheaton Weekly is an independent paper about the people, places and everyday arguments that make Silver Spring, Maryland feel like home.</p>
         </div>
         <div className="about-grid">
           <div>

@@ -1,0 +1,62 @@
+name: Deploy Wheaton Weekly
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    env:
+      PORT: 4173
+      BASE_PATH: /
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @workspace/wheaton-weekly run typecheck
+
+      - run: pnpm --filter @workspace/wheaton-weekly run build
+
+      - name: Prepare Pages files
+        run: |
+          cp artifacts/wheaton-weekly/dist/public/index.html \
+             artifacts/wheaton-weekly/dist/public/404.html
+          echo "wheatonweekly.com" \
+             > artifacts/wheaton-weekly/dist/public/CNAME
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: artifacts/wheaton-weekly/dist/public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
